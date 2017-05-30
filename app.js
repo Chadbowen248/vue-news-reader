@@ -2,52 +2,48 @@
 
 Vue.component("news-container", {
   template: `<div>
-               
-                  <news-source v-for="article in news" 
-                    
-                    :title="article.title"
-                    :image="article.urlToImage"
-                    :URL="article.url"
+                  <news-source v-for="source in sources"
+                    :source="source"
                     :key="Date.now()">
                   </news-source>
-             
               </div>`,
   data() {
-    var sources = [
-      "?source=the-washington-post&sortBy=top",
-      "?source=buzzfeed&sortBy=top",
-      "?source=mashable&sortBy=top"
-    ];
-    var news = [];
-    var isLoading = true;
     return {
-      news,
-      isLoading,
-      sources
+      sources: [
+        "bbc-news",
+        "the-washington-post",
+        "associated-press",
+        "cnn",
+        "buzzfeed",
+        "mashable",
+        "hacker-news",
+        "techcrunch"
+      ]
     };
-  },
-  //move to child component, pass source string as prop is child --- maybe
-  mounted() {
-    const APIkey = "&apiKey=26ce81bcd5214311bb4c8d1bd8761e20";
-    const endPoint = "https://newsapi.org/v1/articles";
-    axios.get(endPoint + this.sources[2] + APIkey).then(res => {
-      this.news = res.data.articles.slice(1, 9);
-      this.isLoading = false;
-    });
   }
 });
 
 // CHILD
 
 Vue.component("news-source", {
-  props: ["title", "image", "URL", "source"],
-  template: `<div>
-              <a :href="URL">
-                {{title}}
-              </a>
-              {{source}}
-              <img :src="image">
-            </div>`
+  props: ["source"],
+  template: `<div :class="source">
+              <h3>{{source.toUpperCase()}}</h3>
+              <div v-for="article in news">
+                {{article.title}}
+              </div>
+            </div>`,
+  data() {
+    return { news: [] };
+  },
+  mounted() {
+    const APIkey = "&sortBy=top&apiKey=26ce81bcd5214311bb4c8d1bd8761e20";
+    const endPoint = "https://newsapi.org/v1/articles?source=";
+    axios.get(endPoint + this.source + APIkey).then(res => {
+      console.log(this.source);
+      this.news = res.data.articles;
+    });
+  }
 });
 
 new Vue({
