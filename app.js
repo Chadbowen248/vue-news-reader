@@ -1,8 +1,14 @@
 // PARENT
 
 Vue.component("news-container", {
-  template: `<div>
+  template: `<div class="news-container">
+                  <div class="sources">
+                    <h3 @click="showArticles" v-for="source in sources">
+                    {{source.toUpperCase()}}
+                    </h3>
+                  </div>
                   <news-source v-for="source in sources"
+                    :articlesVisible="articlesVisible"
                     :source="source"
                     :key="Date.now()">
                   </news-source>
@@ -18,25 +24,36 @@ Vue.component("news-container", {
         "mashable",
         "hacker-news",
         "techcrunch"
-      ]
+      ],
+      articlesVisible: false
     };
+  },
+  methods: {
+    showArticles(e) {
+      console.log(e.target.innerHTML.trim());
+      this.articlesVisible = true;
+    }
   }
 });
 
 // CHILD
 
 Vue.component("news-source", {
-  props: ["source"],
+  props: ["source", "articlesVisible"],
   template: `<div :class="source">
-              <h3>{{source.toUpperCase()}}</h3>
-              <div v-for="article in news">
-                {{article.title}}
+             
+              <div v-if="articlesVisible" class="articles">
+                <div v-for="article in news">
+                  <h6>{{article.title}}</h6>
+                </div>
               </div>
             </div>`,
   data() {
-    return { news: [] };
+    return {
+      news: []
+    };
   },
-  mounted() {
+  created() {
     const APIkey = "&sortBy=top&apiKey=26ce81bcd5214311bb4c8d1bd8761e20";
     const endPoint = "https://newsapi.org/v1/articles?source=";
     axios.get(endPoint + this.source + APIkey).then(res => {

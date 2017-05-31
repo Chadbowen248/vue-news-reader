@@ -7,68 +7,27 @@ body {
     a {
         text-decoration: none;
     }
-#navigation {
-    background-color:  tomato;
+
+
+
+.sources {
     display: flex;
-    justify-content: flex-end;
-    padding: 0 1em;
-        position: fixed;
-    width: 100%;
-}
-    div.testing {
-        padding: 2em 1em;
-        margin: 0;
-    }
-
-.card {
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    height: 300px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    justify-content: flex-end;
-}
-
-.card h5 {
-        font-size: 1em;
-    padding: .875em;
-    color: #ddd;
-    margin: 0;
-    height: 60px;
-    background-color: #000;
-}
-
-#newsReader {
-    display: flex;
-    flex-wrap: wrap;
-    padding-top: 87px;
-}
- #buzzfeedReader, #bbcReader {
-    display: flex;
-    flex-wrap: wrap;
+    background-color: #666;
+    margin: 0px auto;
+    justify-content: space-around;
 }
 
 
-    body #nav-wrapper {
-        text-transform: uppercase;
-        display: flex;
-        padding-right: 2em;
-    
-    }
+.sources h3 {
+    cursor: pointer;
+    transition: color 0.5s ease;
+    color: #f4f4f4;
+}
+.sources h3:hover {
+    color: #FFDC14;
 
+}
 
-    nav > div a {
-        text-decoration: none;
-        color: seashell
-
-    }
-
-    .modal-trigger {
-     width: 300px;
-    height: 1em;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    }
+.articles div h6{
+    font-size: 1em;
+}
