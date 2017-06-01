@@ -3,8 +3,8 @@
 Vue.component("news-container", {
   template: `<div class="news-container">
                   <div class="sources">
-                    <h3 @click="showArticles" v-for="source in sources">
-                    {{source.toUpperCase()}}
+                    <h3 @click="showArticles" v-for="(source,index) in sources">
+                    {{source.toUpperCase()}} - {{index}}
                     </h3>
                   </div>
                   <news-source v-for="source in sources"
@@ -31,7 +31,7 @@ Vue.component("news-container", {
   methods: {
     showArticles(e) {
       console.log(e.target.innerHTML.trim());
-      this.articlesVisible = true;
+      this.articlesVisible = !this.articlesVisible;
     }
   }
 });
@@ -41,7 +41,6 @@ Vue.component("news-container", {
 Vue.component("news-source", {
   props: ["source", "articlesVisible"],
   template: `<div :class="source">
-             
               <div v-if="articlesVisible" class="articles">
                 <div v-for="article in news">
                   <h6>{{article.title}}</h6>
