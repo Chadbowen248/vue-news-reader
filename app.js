@@ -36,7 +36,7 @@ Vue.component("news-container", {
   }
 });
 
-// CHILD
+// CHILD //
 
 Vue.component("news-source", {
   props: ["source", "articlesVisible"],
