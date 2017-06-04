@@ -2,36 +2,39 @@
 
 Vue.component("news-container", {
   template: `<div class="news-container">
-                  <div class="sources">
-                    <h3 @click="showArticles" v-for="(source,index) in sources">
-                    {{source.toUpperCase()}} - {{index}}
-                    </h3>
-                  </div>
-                  <news-source v-for="source in sources"
-                    :articlesVisible="articlesVisible"
-                    :source="source"
+                  <news-source v-for="(source,index) in sources"
+                    :source="source.name"
+                    :visible="source.visible"
+                    :resetNews="resetNews"
+                    :index="index"
                     :key="Date.now()">
                   </news-source>
               </div>`,
   data() {
     return {
       sources: [
-        "bbc-news",
-        "the-washington-post",
-        "associated-press",
-        "cnn",
-        "buzzfeed",
-        "mashable",
-        "hacker-news",
-        "techcrunch"
-      ],
-      articlesVisible: false
+        { name: "bbc-news", visible: false },
+        { name: "the-washington-post", visible: false },
+        { name: "associated-press", visible: false },
+        { name: "cnn", visible: false },
+        { name: "buzzfeed", visible: false },
+        { name: "mashable", visible: false },
+        { name: "hacker-news", visible: false },
+        { name: "techcrunch", visible: false }
+      ]
     };
   },
   methods: {
-    showArticles(e) {
-      console.log(e.target.innerHTML.trim());
-      this.articlesVisible = !this.articlesVisible;
+    resetNews(target) {
+      this.sources.forEach(function(key) {
+        if (target === this.index) {
+          console.log("its the same");
+        } else {
+          key.visible = false;
+        }
+      });
+      this.sources[target].visible = true;
+      console.log(this.sources);
     }
   }
 });
@@ -39,9 +42,10 @@ Vue.component("news-container", {
 // CHILD //
 
 Vue.component("news-source", {
-  props: ["source", "articlesVisible"],
+  props: ["source", "index", "visible", "resetNews"],
   template: `<div :class="source">
-              <div v-if="articlesVisible" class="articles">
+                <h4 @click="resetNews(index)">{{source.toUpperCase()}}</h4>
+              <div v-if="this.isVisible" class="articles">
                 <div v-for="article in news">
                   <h6>{{article.title}}</h6>
                 </div>
@@ -49,14 +53,14 @@ Vue.component("news-source", {
             </div>`,
   data() {
     return {
-      news: []
+      news: [],
+      isVisible: this.visible
     };
   },
   created() {
     const APIkey = "&sortBy=top&apiKey=26ce81bcd5214311bb4c8d1bd8761e20";
     const endPoint = "https://newsapi.org/v1/articles?source=";
     axios.get(endPoint + this.source + APIkey).then(res => {
-      console.log(this.source);
       this.news = res.data.articles;
     });
   }
