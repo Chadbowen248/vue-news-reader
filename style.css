@@ -28,6 +28,11 @@ body {
 
 }
 
-.articles div h6{
-    font-size: 1em;
+.article div h6{
+    display: none;
+}
+
+.visible {
+    transition: 2s;
+    color: red;
 }

@@ -26,10 +26,10 @@ Vue.component("news-container", {
   },
   methods: {
     resetNews(target) {
-      this.sources.forEach(function(key) {
-        if (target === this.index) {
-          console.log("its the same");
-        } else {
+      console.log(target);
+      this.sources.forEach(function(key, index) {
+        if (target !== index) {
+          console.log(index, target);
           key.visible = false;
         }
       });
@@ -60,9 +60,15 @@ Vue.component("news-source", {
   created() {
     const APIkey = "&sortBy=top&apiKey=26ce81bcd5214311bb4c8d1bd8761e20";
     const endPoint = "https://newsapi.org/v1/articles?source=";
+    // if (!localStorage[`${this.source}`]) {
     axios.get(endPoint + this.source + APIkey).then(res => {
       this.news = res.data.articles;
+      // localStorage[`${this.source}`] = JSON.stringify(res.data.articles);
     });
+    // } else {
+    // this.news = localStorage[`${this.source}`];
+    // myJSONObject = JSON.parse(localStorage['jsoncache']);
+    // }
   }
 });
 
